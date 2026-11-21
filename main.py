@@ -35,6 +35,13 @@ def main() -> None:
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     with open(OUTPUT_PATH, "w", encoding="utf-8") as handle:
         handle.write(text + "\n")
+    # Read back what was written and confirm it is exactly the joke
+    # that passed the gate above, so a truncated or mangled write
+    # can never silently reach the judge.
+    with open(OUTPUT_PATH, encoding="utf-8") as handle:
+        written = handle.read()
+    if written != text + "\n":
+        raise ValueError("written entry.txt does not match the validated joke")
     print(f"wrote {len(text)} characters to {OUTPUT_PATH}")
 
 
